@@ -4,9 +4,9 @@ info:
   description: >
     [Vandelay
     Industries](http://www.urbandictionary.com/define.php?term=Vandelay) is a
-    vertically integrated chemical manufaturing, import/export, and sales
+    vertically integrated chemical manufacturing, import/export, and sales
     enterprise headquartered in the Upper West Side, NYC. It was founded by Art
-    Vandely in 1990.
+    Vandelay in 1990.
 
 
     It is known both for the quality of its product as well as its aggressive
@@ -35,7 +35,7 @@ paths:
       description: >-
         The factory is an important top-level object for tracking both
         manufacturing activities as well as supply chain & order fulfillment,
-        underpinning Vandelays import/export business.
+        underpinning Vandelay's import/export business.
       operationId: getFactories
       responses:
         '200':
@@ -52,7 +52,7 @@ paths:
       description: >-
         The factory is an important top-level object for tracking both
         manufacturing activities as well as supply chain & order fulfillment,
-        underpinning Vandelays import/export business.
+        underpinning Vandelay's import/export business.
       operationId: getMachines
       parameters:
         - name: factoryId
