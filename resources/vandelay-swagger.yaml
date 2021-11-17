@@ -44,7 +44,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Factory'
-  '/factories/{factoryId}/machines':
+  /factories/{factoryId}/machines:
     get:
       tags:
         - capital equipment
@@ -83,7 +83,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Warehouse'
-  '/warehouses/{warehouseId}/inventory':
+  /warehouses/{warehouseId}/inventory:
     get:
       tags:
         - inventory
