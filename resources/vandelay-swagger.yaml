@@ -54,6 +54,9 @@ paths:
         manufacturing activities as well as supply chain & order fulfillment,
         underpinning Vandelay's import/export business.
       operationId: getFactories
+      parameters:
+        - $ref: '#/parameters/limitParam'
+        - $ref: '#/parameters/offsetParam'
       responses:
         '200':
           description: OK
@@ -80,6 +83,8 @@ paths:
         underpinning Vandelay's import/export business.
       operationId: getMachines
       parameters:
+        - $ref: '#/parameters/limitParam'
+        - $ref: '#/parameters/offsetParam'
         - name: factoryId
           in: path
           description: The ID of the factory housing the machine
@@ -113,6 +118,9 @@ paths:
         The warehouse is an important top-level object for tracking both inbound
         material and outbound product.
       operationId: getWarehouses
+      parameters:
+        - $ref: '#/parameters/limitParam'
+        - $ref: '#/parameters/offsetParam'
       responses:
         '200':
           description: OK
@@ -136,6 +144,8 @@ paths:
       description: Currently an unpaged inventory list
       operationId: getWarehouse
       parameters:
+        - $ref: '#/parameters/limitParam'
+        - $ref: '#/parameters/offsetParam'
         - name: warehouseId
           in: path
           description: The ID of the warehouse to return inventory for inventory for
@@ -226,12 +236,23 @@ paths:
           $ref: '#/responses/Unauthorized'
         '404':
           $ref: '#/responses/NotFound'
-#parameters:
-#  Pagination:
-#    - in: header
-#      name: X-Request-ID
-#      type: string
-#      required: true
+parameters:
+  offsetParam:
+    name: offset
+    in: header
+    required: false
+    type: integer
+    minimum: 0
+    description: The number of items to skip before starting to collect the result set.
+  limitParam:
+    name: limit
+    in: header
+    required: false
+    type: integer
+    minimum: 1
+    maximum: 50
+    default: 20
+    description: The numbers of items to return.
 responses:
   NotFound:
     description: The specified resource was not found
