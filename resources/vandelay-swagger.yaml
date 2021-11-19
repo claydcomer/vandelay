@@ -16,8 +16,6 @@ info:
     The Vandelay Industries API platform, documented here, represents a unified
     view of its ERP and CRM systems for use by both internal applications and
     3rd-party strategic partner system integrations.
-     
-         
   version: 0.0.1
 host: vandelay.apivista.com
 schemes:
@@ -27,6 +25,25 @@ basePath: /v1
 produces:
   - application/json
 paths:
+  /health:
+    get:
+      tags:
+        - health check
+      summary: A basic API Health Check Endpoint
+      security:
+        - OAuth2: [ admin ]
+      description: >-
+        Allows monitoring applications to verify that the API is available and healthy
+      operationId: getAPIHealth
+      responses:
+        '200':
+          description: API is up and healthy
+        '401':
+          description: Not authenticated
+        '403':
+          description: Access token does not have the required scope
+        '503':
+          description: API is not reachable
   /factories:
     get:
       tags:
@@ -44,6 +61,14 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Factory'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalError'
+        '503':
+          $ref: '#/responses/Unavailable'
   /factories/{factoryId}/machines:
     get:
       tags:
@@ -67,6 +92,18 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Machine'
+        '400':
+          description: Invalid Factory ID
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalError'
+        '503':
+          $ref: '#/responses/Unavailable'
   /warehouses:
     get:
       tags:
@@ -83,6 +120,14 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Warehouse'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalError'
+        '503':
+          $ref: '#/responses/Unavailable'
   /warehouses/{warehouseId}/inventory:
     get:
       tags:
@@ -103,6 +148,18 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Inventory'
+        '400':
+          description: Invalid Warehouse ID
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '404':
+          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalError'
+        '503':
+          $ref: '#/responses/Unavailable'
     post:
       tags:
         - inventory
@@ -128,6 +185,14 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Inventory'
+        '400':
+          description: Invalid Warehouse Inventory Item received
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '404':
+          $ref: '#/responses/NotFound'
     patch:
       tags:
         - inventory
@@ -153,6 +218,41 @@ paths:
             type: array
             items:
               $ref: '#/definitions/InventoryItem'
+        '400':
+          description: Invalid Warehouse Inventory Item received
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '404':
+          $ref: '#/responses/NotFound'
+#parameters:
+#  Pagination:
+#    - in: header
+#      name: X-Request-ID
+#      type: string
+#      required: true
+responses:
+  NotFound:
+    description: The specified resource was not found
+    schema:
+      $ref: '#/definitions/Error'
+  BadRequest:
+    description: A validation error was discovered with the request
+    schema:
+      $ref: '#/definitions/Error'
+  Unauthorized:
+    description: API key missing or invalid
+    schema:
+      $ref: '#/definitions/Error'
+  Unavailable:
+    description: API is unavailable
+    schema:
+      $ref: '#/definitions/Error'
+  InternalError:
+    description: An internal server error occured
+    schema:
+      $ref: '#/definitions/Error'
 definitions:
   Factory:
     type: object
@@ -278,3 +378,39 @@ definitions:
         type: string
       country:
         type: string
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    required:
+      - code
+      - message
+  ValidationError:
+    type: object
+    properties:
+      code:
+        type: string
+      objectId:
+        type: string
+      message:
+        type: string
+    required:
+      - code
+      - message
+security:
+  - ApiKeyAuth: []
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: X-API-Key
+  OAuth2:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: https://vandelay.apivista.com/oauth/authorize
+    tokenUrl: https://vandelay.apivista.com/oauth/token
+    scopes:
+      admin: Grants read and write access to administrative information
