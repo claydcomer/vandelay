@@ -236,6 +236,39 @@ paths:
           $ref: '#/responses/Unauthorized'
         '404':
           $ref: '#/responses/NotFound'
+    delete:
+      tags:
+        - inventory
+      summary: Deletes an inventory item in a warehouse
+      operationId: deleteItem
+      parameters:
+        - name: warehouseId
+          in: path
+          description: The ID of the warehouse containing the item
+          required: true
+          type: string
+        - name: item
+          description: |
+            This object represents all the Item specifics
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/InventoryUpdate'
+      responses:
+        '200':
+          description: Item Deleted
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/InventoryItem'
+        '400':
+          description: Invalid Warehouse Inventory Item received
+          schema:
+            $ref: '#/definitions/ValidationError'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '404':
+          $ref: '#/responses/NotFound'
 parameters:
   offsetParam:
     name: offset
@@ -364,9 +397,6 @@ definitions:
       itemDescription:
         type: string
         example: For sealing specimens to preserve them
-      itemDelete:
-        type: boolean
-        example: Set True to delete item from inventory
   InventoryItem:
     type: object
     properties:
