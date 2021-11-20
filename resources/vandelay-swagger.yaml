@@ -201,8 +201,10 @@ paths:
             $ref: '#/definitions/ValidationError'
         '401':
           $ref: '#/responses/Unauthorized'
-        '404':
-          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalError'
+        '503':
+          $ref: '#/responses/Unavailable'
     patch:
       tags:
         - inventory
@@ -234,8 +236,10 @@ paths:
             $ref: '#/definitions/ValidationError'
         '401':
           $ref: '#/responses/Unauthorized'
-        '404':
-          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalError'
+        '503':
+          $ref: '#/responses/Unavailable'
     delete:
       tags:
         - inventory
@@ -267,8 +271,10 @@ paths:
             $ref: '#/definitions/ValidationError'
         '401':
           $ref: '#/responses/Unauthorized'
-        '404':
-          $ref: '#/responses/NotFound'
+        '500':
+          $ref: '#/responses/InternalError'
+        '503':
+          $ref: '#/responses/Unavailable'
 parameters:
   offsetParam:
     name: offset
