@@ -440,8 +440,10 @@ definitions:
     properties:
       code:
         type: string
+        example: 500
       message:
         type: string
+        example: An unexpected error occured
     required:
       - code
       - message
@@ -450,10 +452,13 @@ definitions:
     properties:
       code:
         type: string
+        example: 400
       objectId:
         type: string
+        example: 12345678
       message:
         type: string
+        example: Item name is required
     required:
       - code
       - message
