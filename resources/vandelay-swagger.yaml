@@ -300,7 +300,7 @@ responses:
   BadRequest:
     description: A validation error was discovered with the request
     schema:
-      $ref: '#/definitions/Error'
+      $ref: '#/definitions/ValidationError'
   Unauthorized:
     description: API key missing or invalid
     schema:
